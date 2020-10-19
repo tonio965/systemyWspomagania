@@ -1,0 +1,12 @@
+Zaimplementuj (system będzie modułowy - kolejne moduły na kolejnych zajęciach):
+
+wczytywanie danych w formacie tekstowym (dane oddzielone spacją, tabulatorem, średnikiem; w pliku same dane bez liczby wierszy lub kolumn; dane mogą być tekstowe lub numeryczne), mogą posiadać wiersz nagłówkowy z nazwami kolumn; każdą linię zaczynającą się od znaku # należy zignorować (komentarz);
+dla chętnych wczytywanie danych z Excela lub bezpośrednie przeklejanie danych z Excela do arkusza z danymi w programie;
+zamiana danych tekstowych na numeryczne (np. klasa1, klasa2, klasa3 zmieniane na kolejne liczby całkowite 1,2,3 - np. wg kolejności alfabetycznej lub kolejności wystąpienia);
+dyskretyzacja zmiennych rzeczywistych na określoną liczbę przedziałów;
+normalizacja zmiennych rzeczywistych ( (wartość-średnia)/odchylenie_standardowe);
+zmiana przedziału wartości z oryginalnego <min; max> na przedział, którego zakres wartości poda użytkownik <a; b>
+wyświetlenie/zaznaczenie określonego przez użytkownika procentu najmniejszych i największych wartości zmiennych
+wykres 2D (rozproszeń dwuwymiarowy) - zależność dwóch zmiennych, z możliwością wybrania opcji o zastosowaniu kolorów/znaczników do klas
+wykres 3D
+histogram (zmienna dyskretna, zmienna ciągła - podanie liczby przedziałów)

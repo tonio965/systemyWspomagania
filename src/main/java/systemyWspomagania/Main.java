@@ -1,9 +1,13 @@
 package systemyWspomagania;
 
+import executePackage.ExecuteFirst;
+import reading.ReadFromFileWithHeaders;
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		ExecuteFirst executeFirst = new ExecuteFirst();
+
 
 	}
 

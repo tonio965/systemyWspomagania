@@ -17,7 +17,7 @@ public class ReadFromFileWithHeaders {
 		readData = new ArrayList<Data>();
 		this.hasHeader = hasHeader;
 	}
-	public void readFromFile(String path) {
+	public List<Data> returnFromFile(String path) {
 	    try {
 	        File myFile = new File(path);
 	        boolean hasLineWithHeaderHappened = false;
@@ -48,12 +48,13 @@ public class ReadFromFileWithHeaders {
 	        System.out.println("something wrong with file.");
 	        e.printStackTrace();
 	      }
+	    return readData;
 		
 	}
 	private String[] removeCharsFromNumericString(String[] strArray) {
 		for(int i=0; i<strArray.length; i++) {
 			if(strArray[i].matches(".*\\d"));
-				strArray[i].replaceAll("[^0-9,]", "");
+				strArray[i].replaceAll("[^0-9,-]", "");
 		}
 		return strArray;
 	}

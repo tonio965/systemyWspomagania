@@ -17,18 +17,20 @@ public class Discretization {
 	}
 	
 	
-	public List<DiscretizedColumn> discreteColumn(int columnId, int amountOfSectors) {
+	public List<DiscretizedColumn> discreteColumn(int columnId, int amountOfSectors, double minimum, double maximum) {
 		String toCheck = data.get(1).getData()[columnId]; // 1 is given to avoid trying to parse header
 		boolean isDouble = isDouble(toCheck);
-		double min;
-		double max;
+		double min=minimum;
+		double max=maximum;
 		double sectorSize;
 		
 		if(isDouble) { //if can be casted to double
 			Double [] oneColumn = getOneColumn(columnId);
-			double [] minAndMax = getMinMax(oneColumn);
-			min = minAndMax[0];
-			max = minAndMax[1];
+			if(min ==0 && max == 0) {
+				double [] minAndMax = getMinMax(oneColumn);
+				min = minAndMax[0];
+				max = minAndMax[1];
+			}
 			sectorSize=(max-min)/amountOfSectors;
 			
 			List<DiscretizedColumn> discretizedColumns = new ArrayList<>();
@@ -48,6 +50,8 @@ public class Discretization {
 				discretizedColumns.add(dc);
 				
 			}
+			//dotad dziala wszystko dalej cos debuger wypierdala ///
+			///////////////////////////////////////////////////////
 			int counter=0;
 			for(Double value : oneColumn) { //here im looping inside the data set and i will be adding data to separate DiscretizedColumn set regarding the value in the column
 				
@@ -57,8 +61,7 @@ public class Discretization {
 				}
 				else { //if is not the header
 					
-					for(DiscretizedColumn dc : discretizedColumns) {
-						
+					for(DiscretizedColumn dc : discretizedColumns) {	
 						if(value >= dc.getSectorMin() && value<= dc.getSectorMax()) {
 							dc.addToIndexInRawDataset(counter);
 							dc.addElementToSector(value);

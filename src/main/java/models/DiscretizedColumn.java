@@ -12,10 +12,14 @@ public class DiscretizedColumn {  //this class has a purpose to hold discretized
 	private int sectorElements;
 	private List<Double> elementsInSector;
 	private List<Integer> indexInRawDataset;
+	private List<Double> normalizedValues;
+	private double normalizedValue;
 	
 	public DiscretizedColumn() {
 		super();
 		elementsInSector = new ArrayList<>();
+		indexInRawDataset = new ArrayList<>();
+		normalizedValues = new ArrayList<>();
 	}
 	
 	public int getColumnId() {
@@ -81,6 +85,29 @@ public class DiscretizedColumn {  //this class has a purpose to hold discretized
 	public void addToIndexInRawDataset(Integer i) {
 		this.indexInRawDataset.add(i);
 	}
+
+	public List<Double> getNormalizedValues() {
+		return normalizedValues;
+	}
+
+	public void setNormalizedValues(List<Double> normalizedValues) {
+		this.normalizedValues = normalizedValues;
+	}
+	
+	public void addNormalizedValue(double normalized) {
+		normalizedValues.add(normalized);
+	}
+
+	@Override
+	public String toString() {
+		return "DiscretizedColumn [sectorMin=" + sectorMin + ", sectorMax=" + sectorMax + ", sectorElements="
+				+ sectorElements + ", elementsInSector=" + elementsInSector + ", indexInRawDataset=" + indexInRawDataset
+				+ ", normalizedValues=" + normalizedValues + ", normalizedValue=" + normalizedValue + "]";
+	}
+	
+	
+	
+	
 	
 	
 	

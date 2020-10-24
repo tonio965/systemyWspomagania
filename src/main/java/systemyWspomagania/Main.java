@@ -11,7 +11,7 @@ import reading.ReadFromFileWithHeaders;
 public class Main extends Application{
 
 	public static void main(String[] args) {
-		ExecuteFirst executeFirst = new ExecuteFirst();
+//		ExecuteFirst executeFirst = new ExecuteFirst();
 		launch(args);
 
 	}

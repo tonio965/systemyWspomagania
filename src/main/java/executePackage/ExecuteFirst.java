@@ -95,6 +95,44 @@ public class ExecuteFirst {
 		}
 	}
 
+
+
+	public ExecuteFirst(String path, boolean headers, boolean minMaxCheckbox, Double minValue, Double maxValue,
+			boolean showPercentOfResults, boolean topOrBottomPercentOfResults, int percentValue,
+			int columnId, int sectorAmount) {
+		
+		List<Data> readFromFile;
+		double min = 0;
+		double max = 0;
+		if(!minMaxCheckbox) { //if user doesnt want to keep original max and min values - change to provided
+			min = minValue;
+			max = maxValue;
+		}
+			
+		ReadFromFileWithHeaders fwh = new ReadFromFileWithHeaders(headers);
+		readFromFile=fwh.returnFromFile(path);
+		Discretization d= new Discretization(readFromFile, headers);
+		List<DiscretizedColumn> discretized =d.discreteColumn(columnId, sectorAmount, min, max); //retruns a set of records to further consideration eg counting standard deviation
+		StandardDeviation sd1 = new StandardDeviation(discretized); //second parameter is a column to discretize - the same value as 1st parameter in discretized
+		List<DiscretizedColumn> normalized = sd1.addNormalizedValues(discretized);
+		if(showPercentOfResults) { //original checkbox is selected
+			printResults(filterResults(true, 100, normalized));
+		}
+		else { // not original value not checked
+			List<Double> filteredResults;
+			if(topOrBottomPercentOfResults) { //top n% of results
+				filteredResults = filterResults(true, percentValue, normalized);
+				printResults(filteredResults);
+			}
+			else { //bottom n% of results
+				filteredResults = filterResults(false, percentValue, normalized);
+				printResults(filteredResults);
+			}
+		}
+			
+
+	}
+
 	private void printResults(List<Double> normalized) {
 		for(Double dc : normalized) {
 			System.out.println(dc.toString());

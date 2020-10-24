@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="ParentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="systemyWspomagania.FXMLDocumentController">
-
+   <children>
+      <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select file:" wrappingWidth="67.0" />
+      <Button fx:id="SelectFileBtn" layoutX="81.0" layoutY="27.0" mnemonicParsing="false" onAction="#selectFileButtonPressed" text="Select file" />
+      <Text layoutX="14.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="headers?" wrappingWidth="57.22900390625" />
+      <CheckBox fx:id="headerCheckbox" layoutX="76.0" layoutY="68.0" mnemonicParsing="false" onAction="#headerCheckboxSelected" />
+      <Text layoutX="14.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="min and max value" />
+      <CheckBox fx:id="minAndMaxValueCheckbox" layoutX="126.0" layoutY="99.0" mnemonicParsing="false" onAction="#minAndMaxValueCheckboxSelected" text="original" />
+      <TextField fx:id="maxValueTextField" layoutX="153.0" layoutY="126.0" prefHeight="27.0" prefWidth="37.0" />
+      <Text layoutX="104.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="max:" wrappingWidth="48.2451171875" />
+      <Text layoutX="14.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\% of results" wrappingWidth="83.22900390625" />
+      <CheckBox fx:id="percentCheckbox" layoutX="88.0" layoutY="168.0" mnemonicParsing="false" text="Original" />
+      <TextField fx:id="resultsPercentTextField" layoutX="153.0" layoutY="199.0" prefHeight="27.0" prefWidth="37.0" />
+      <Text layoutX="104.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="value" wrappingWidth="48.2451171875" />
+      <Button fx:id="firstExcerciseButton" layoutX="78.0" layoutY="309.0" mnemonicParsing="false" onAction="#executeFirstExcercise" text="Execute" />
+      <CheckBox fx:id="topPercentCheckbox" layoutX="13.0" layoutY="204.0" mnemonicParsing="false" text="top/bottom" />
+      <TextField fx:id="minValueTextField" layoutX="58.0" layoutY="126.0" prefHeight="27.0" prefWidth="37.0" />
+      <Text layoutX="7.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="min:" wrappingWidth="48.2451171875" />
+      <Text layoutX="8.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnId" />
+      <Text layoutX="96.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="sectors" />
+      <TextField fx:id="columnIdTextField" layoutX="65.0" layoutY="244.0" prefHeight="27.0" prefWidth="24.0" />
+      <TextField fx:id="sectorsTextField" layoutX="146.0" layoutY="244.0" prefHeight="27.0" prefWidth="37.0" />
+   </children>
 </AnchorPane>

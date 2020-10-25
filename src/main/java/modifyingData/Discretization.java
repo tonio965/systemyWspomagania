@@ -44,6 +44,7 @@ public class Discretization {
 				dc.setSectorMin(currentSectorMin);
 				dc.setSectorMax(currentSectorMax);
 				dc.setSectorSize(dc.getSectorMax()-dc.getSectorMin());
+				dc.setColumnId(i);
 				
 				currentSectorMin=currentSectorMax+tinyFraction;
 				currentSectorMax=currentSectorMin+sectorSize;
@@ -60,7 +61,6 @@ public class Discretization {
 					continue; //if a header skip an iteration
 				}
 				else { //if is not the header
-					
 					for(DiscretizedColumn dc : discretizedColumns) {	
 						if(value >= dc.getSectorMin() && value<= dc.getSectorMax()) {
 							dc.addToIndexInRawDataset(counter);

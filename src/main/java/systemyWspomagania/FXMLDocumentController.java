@@ -2,17 +2,24 @@ package systemyWspomagania;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import executePackage.ExecuteFirst;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import models.Data;
 
 public class FXMLDocumentController implements Initializable{
 	
@@ -58,6 +65,9 @@ public class FXMLDocumentController implements Initializable{
     @FXML
     private TextField sectorsTextField;
     
+    @FXML
+    private TableView<Data> TableView1;
+    
     //onclick on select etc
     
 
@@ -94,11 +104,14 @@ public class FXMLDocumentController implements Initializable{
     	}
     	
     	
-    	ExecuteFirst executeFirst = new ExecuteFirst(path,headers,minMaxCheckbox,minValue,maxValue,
-    			showPercentOfResults,topOrBottomPercentOfResults, percentValue, columnId, sectorAmount);
+    	ExecuteFirst executeFirst = new ExecuteFirst();
+    	executeFirst.returnDiscretizedAndNormalizedData(path, headers, minMaxCheckbox, minValue, maxValue, 
+    			showPercentOfResults, topOrBottomPercentOfResults, percentValue, columnId, sectorAmount);
+    	
+    	populateTableViewWithData(executeFirst.getRawDataset());
     }
 
-    @FXML
+	@FXML
     void headerCheckboxSelected(ActionEvent event) {
 
     }
@@ -119,6 +132,22 @@ public class FXMLDocumentController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+	}
+	
+    private void populateTableViewWithData(List<Data> rawDataset) {
+		List<TableColumn> tableColumns = new ArrayList<>();
+		int size= rawDataset.get(1).getData().length + 2 ; // if have 3 eleemnts - 0 1 2 it returns 3 +2 is for sectorId and mormalized data 
+		for(int i=0;i<size;i++) {
+			TableView1.getColumns().add(new TableColumn(""+i));
+		}
+		TableView1.getItems().add(rawDataset.get(2));
+//		for(int i=0;i<size;i++) {
+//			for(int j=0;j<rawDataset.size();j++) {
+//				TableView1.getColumns().get(i).set
+//			}
+//		}
+//	    	ObservableList<Data> observableList = FXCollections.observableArrayList(rawDataset);
+//	    TableView1.setItems(observableList);
 	}
 	
 	

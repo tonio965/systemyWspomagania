@@ -2,11 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="ParentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="systemyWspomagania.FXMLDocumentController">
+<AnchorPane fx:id="ParentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="989.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="systemyWspomagania.FXMLDocumentController">
    <children>
       <Text layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select file:" wrappingWidth="67.0" />
       <Button fx:id="SelectFileBtn" layoutX="81.0" layoutY="27.0" mnemonicParsing="false" onAction="#selectFileButtonPressed" text="Select file" />
@@ -28,5 +29,6 @@
       <Text layoutX="96.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="sectors" />
       <TextField fx:id="columnIdTextField" layoutX="65.0" layoutY="244.0" prefHeight="27.0" prefWidth="24.0" />
       <TextField fx:id="sectorsTextField" layoutX="146.0" layoutY="244.0" prefHeight="27.0" prefWidth="37.0" />
+      <TableView fx:id="TableView1" layoutX="300.0" layoutY="26.0" prefHeight="309.0" prefWidth="612.0" />
    </children>
 </AnchorPane>

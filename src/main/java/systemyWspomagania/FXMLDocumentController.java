@@ -12,13 +12,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import models.Data;
 
 public class FXMLDocumentController implements Initializable{
@@ -68,6 +73,10 @@ public class FXMLDocumentController implements Initializable{
     @FXML
     private TableView<Data> TableView1;
     
+
+    @FXML
+    private ScatterChart<?, ?> scatterChart1;
+    
     //onclick on select etc
     
 
@@ -109,7 +118,28 @@ public class FXMLDocumentController implements Initializable{
     			showPercentOfResults, topOrBottomPercentOfResults, percentValue, columnId, sectorAmount);
     	
     	populateTableViewWithData(executeFirst.getRawDataset());
+    	createScatterChart(executeFirst.getRawDataset(),0,1);
     }
+
+	private void createScatterChart(List<Data> rawDataset, int i, int j) {
+		XYChart.Series dataSeries1 = new XYChart.Series();
+		dataSeries1.setName("Scattered data");
+		int counter=0;
+		for(Data d: rawDataset) {
+			if(counter ==0 && headerCheckbox.isSelected()) {
+				counter++;
+				continue;
+			}
+			else {
+				dataSeries1.getData().add(new XYChart.Data( d.getData()[i], Double.valueOf(d.getData()[j])));
+				counter++;
+			}
+		}
+
+		scatterChart1.getData().add(dataSeries1);
+		
+		
+	}
 
 	@FXML
     void headerCheckboxSelected(ActionEvent event) {
@@ -135,20 +165,25 @@ public class FXMLDocumentController implements Initializable{
 	}
 	
     private void populateTableViewWithData(List<Data> rawDataset) {
-		List<TableColumn> tableColumns = new ArrayList<>();
-		int size= rawDataset.get(1).getData().length + 2 ; // if have 3 eleemnts - 0 1 2 it returns 3 +2 is for sectorId and mormalized data 
-		for(int i=0;i<size;i++) {
-			TableView1.getColumns().add(new TableColumn(""+i));
-		}
-		TableView1.getItems().add(rawDataset.get(2));
-//		for(int i=0;i<size;i++) {
-//			for(int j=0;j<rawDataset.size();j++) {
-//				TableView1.getColumns().get(i).set
-//			}
-//		}
-//	    	ObservableList<Data> observableList = FXCollections.observableArrayList(rawDataset);
-//	    TableView1.setItems(observableList);
-	}
+    	ObservableList<Data> allData = FXCollections.observableArrayList();
+    	for(Data d : rawDataset) {
+    		allData.add(d); 
+    	}
+    	
+    	TableColumn sectorIdColumn = new TableColumn("sectorid");
+    	sectorIdColumn.setCellValueFactory(new PropertyValueFactory<>("sectorId"));
+    	
+    	TableColumn normalizedColumnData = new TableColumn("normalizedCol");
+    	normalizedColumnData.setCellValueFactory(new PropertyValueFactory<>("normalizedDataValue"));
+    	
+    	TableColumn  dataColumn = new TableColumn("combinedData");
+    	dataColumn.setCellValueFactory(new PropertyValueFactory<>("combinedData"));
+    	
+    	TableView1.setItems(allData);
+    	TableView1.getColumns().addAll(sectorIdColumn,dataColumn,normalizedColumnData);
+    }
+
+
 	
 	
 

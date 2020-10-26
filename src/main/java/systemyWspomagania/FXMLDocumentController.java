@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
+
 import executePackage.ExecuteFirst;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,12 +27,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import models.Data;
+import tech.tablesaw.api.DoubleColumn;
+import tech.tablesaw.api.StringColumn;
+import tech.tablesaw.api.Table;
+import tech.tablesaw.plotly.Plot;
+import tech.tablesaw.plotly.api.Scatter3DPlot;
+import tech.tablesaw.plotly.api.ScatterPlot;
 
 public class FXMLDocumentController implements Initializable{
 	
 	//fields generated manually
 	File selectedFile;
 	
+	List<Data> dataToPopulate;
 	
 	//annotated fields generated automatically
 
@@ -77,6 +86,110 @@ public class FXMLDocumentController implements Initializable{
     @FXML
     private ScatterChart<?, ?> scatterChart1;
     
+    @FXML
+    private TextField scatterplotXtextField;
+
+    @FXML
+    private TextField scatterplotYextField;
+
+    @FXML
+    private TextField scatterplotZextField;
+
+    @FXML
+    private Button draw2dPlotButton;
+
+    @FXML
+    private Button draw3dPlotButton;
+    
+    @FXML
+    void draw2dplot(ActionEvent event) {
+
+    	String [] first = new String [dataToPopulate.size()];
+    	String [] second = new String [dataToPopulate.size()];
+    	String xVal = scatterplotXtextField.getText().toString();
+    	String yVal = scatterplotYextField.getText().toString();
+    	System.out.println("breakpoint");
+		for(int i=0;i<dataToPopulate.size(); i++) {
+			
+			
+	    	if(xVal.equals("n")) {
+	    		first[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
+	    	}
+	    	else {
+	    		int option=Integer.valueOf(xVal);
+	    		second[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
+	    	}
+	    	if(yVal.equals("n")) {
+	    		second[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
+	    	}
+	    	else {
+	    		int option=Integer.valueOf(yVal);
+	    		second[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
+	    	}
+		}
+		
+    	Table myData =
+    		    Table.create("Cute data")
+    		        .addColumns(
+    		            StringColumn.create("first", first),
+    		            StringColumn.create("second", second));
+
+    	Plot.show(
+    			ScatterPlot.create("2D Plot", 
+    		                       myData, "first", "second")); //2dplot
+    	
+    	
+    }
+
+    @FXML
+    void draw3dplot(ActionEvent event) {
+
+    	String [] first = new String [dataToPopulate.size()];
+    	String [] second = new String [dataToPopulate.size()];
+    	String [] third = new String [dataToPopulate.size()];
+    	String xVal = scatterplotXtextField.getText().toString();
+    	String yVal = scatterplotYextField.getText().toString();
+    	String zVal = scatterplotZextField.getText().toString();
+		for(int i=0;i<dataToPopulate.size(); i++) {
+			
+	    	if(xVal.equals("n")) {
+	    		first[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
+	    	}
+	    	else {
+	    		int option=Integer.valueOf(xVal);
+	    		second[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
+	    	}
+	    	
+	    	
+	    	if(yVal.equals("n")) {
+	    		second[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
+	    	}
+	    	else {
+	    		int option=Integer.valueOf(yVal);
+	    		second[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
+	    	}
+	    	
+	    	
+	    	if(zVal.equals("n")) {
+	    		third[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
+	    	}
+	    	else {
+	    		int option=Integer.valueOf(zVal);
+	    		third[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
+	    	}
+	    	
+		}
+    	Table myData =
+    		    Table.create("Cute data")
+    		        .addColumns(
+    		            StringColumn.create("first", first),
+    		            StringColumn.create("second", second),
+    		            StringColumn.create("third", third));
+    	Plot.show(
+    			Scatter3DPlot.create("3d Plot", 
+    		                       myData, "first", "second", "third")); //3dplot
+    }
+    
     //onclick on select etc
     
 
@@ -114,11 +227,11 @@ public class FXMLDocumentController implements Initializable{
     	
     	
     	ExecuteFirst executeFirst = new ExecuteFirst();
-    	executeFirst.returnDiscretizedAndNormalizedData(path, headers, minMaxCheckbox, minValue, maxValue, 
+    	dataToPopulate=executeFirst.returnDiscretizedAndNormalizedData(path, headers, minMaxCheckbox, minValue, maxValue, 
     			showPercentOfResults, topOrBottomPercentOfResults, percentValue, columnId, sectorAmount);
     	
-    	populateTableViewWithData(executeFirst.getRawDataset());
-    	createScatterChart(executeFirst.getRawDataset(),0,1);
+    	populateTableViewWithData(dataToPopulate);
+//    	createScatterChart(executeFirst.getRawDataset(),0,1);
     }
 
 	private void createScatterChart(List<Data> rawDataset, int i, int j) {
@@ -135,9 +248,7 @@ public class FXMLDocumentController implements Initializable{
 				counter++;
 			}
 		}
-
 		scatterChart1.getData().add(dataSeries1);
-		
 		
 	}
 
@@ -161,15 +272,27 @@ public class FXMLDocumentController implements Initializable{
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		dataToPopulate = new ArrayList<>();
 	}
 	
     private void populateTableViewWithData(List<Data> rawDataset) {
     	ObservableList<Data> allData = FXCollections.observableArrayList();
-    	for(Data d : rawDataset) {
-    		allData.add(d); 
-    	}
+
     	
+    	
+    	int counter = 0;
+    	for(Data d : rawDataset) {
+    		if(headerCheckbox.isSelected() && counter ==0 ) {
+    			counter++;
+    			continue;
+    		}
+    		else {
+        		allData.add(d); 
+        		counter++;
+    		}
+
+    	}
+    	System.out.println("breakpoint");
     	TableColumn sectorIdColumn = new TableColumn("sectorid");
     	sectorIdColumn.setCellValueFactory(new PropertyValueFactory<>("sectorId"));
     	
@@ -181,6 +304,21 @@ public class FXMLDocumentController implements Initializable{
     	
     	TableView1.setItems(allData);
     	TableView1.getColumns().addAll(sectorIdColumn,dataColumn,normalizedColumnData);
+    	
+    	
+    	
+//    	Table myData =
+//    		    Table.create("Cute data")
+//    		        .addColumns(
+//    		            StringColumn.create("zero", zeroColumn),
+//    		            StringColumn.create("firsr", first),
+//    		            StringColumn.create("third", mean));
+//    	Plot.show(
+//    			Scatter3DPlot.create("3d Plot", 
+//    		                       myData, "zero", "firsr", "third")); //3dplot
+//    	Plot.show(
+//    			ScatterPlot.create("2D Plot", 
+//    		                       myData, "zero", "firsr")); //2dplot
     }
 
 

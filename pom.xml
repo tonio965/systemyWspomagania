@@ -10,6 +10,18 @@
 	    <version>11</version>
 	    <type>pom</type>
 	</dependency>
-  
+	<!-- https://mvnrepository.com/artifact/org.jzy3d/jzy3d-api -->
+	<dependency>
+	    <groupId>tech.tablesaw</groupId>
+	    <artifactId>tablesaw-core</artifactId>
+	    <version>0.38.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>tech.tablesaw</groupId>
+	    <artifactId>tablesaw-jsplot</artifactId>
+	    <version>0.38.1</version>
+	</dependency>
+
+	
   </dependencies>
 </project>

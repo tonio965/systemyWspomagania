@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import HelperClasses.NormalizedDataComparator;
 import reading.ReadFromFileWithHeaders;
 import models.Data;
 import models.DiscretizedColumn;
@@ -44,9 +45,10 @@ public class ExecuteFirst {
 
 	}
 	
-	public List<DiscretizedColumn>  returnDiscretizedAndNormalizedData(String path, boolean headers, boolean minMaxCheckbox, Double minValue, Double maxValue,
+	public List<Data>  returnDiscretizedAndNormalizedData(String path, boolean headers, boolean minMaxCheckbox, Double minValue, Double maxValue,
 			boolean showPercentOfResults, boolean topOrBottomPercentOfResults, int percentValue,
 			int columnId, int sectorAmount) {
+		
 		List<Data> readFromFile;
 		double min = 0;
 		double max = 0;
@@ -58,70 +60,72 @@ public class ExecuteFirst {
 		ReadFromFileWithHeaders fwh = new ReadFromFileWithHeaders(headers);
 		readFromFile=fwh.returnFromFile(path);
 		rawDataset=readFromFile;
-		Discretization d= new Discretization(readFromFile, headers);
+		Discretization d= new Discretization(rawDataset, headers);
 		List<DiscretizedColumn> discretized =d.discreteColumn(columnId, sectorAmount, min, max); //retruns a set of records to further consideration eg counting standard deviation
 		StandardDeviation sd1 = new StandardDeviation(discretized); //second parameter is a column to discretize - the same value as 1st parameter in discretized
 		List<DiscretizedColumn> normalized = sd1.addNormalizedValues(discretized);
-		addNormalizedDatatoRawDataset(normalized);
+		exportNormalizedDataToDataset(normalized); //adding normalized values to rawDataset
 		if(showPercentOfResults) { //original checkbox is selected
-			printResults(filterResults(true, 100, normalized));
+			rawDataset=filterResults(true, 100, rawDataset);
+			printResults(rawDataset);
 		}
 		else { // not original value not checked
-			List<Double> filteredResults;
+			List<Data> filteredResults;
 			List<DiscretizedColumn> filteredNormalized;
 			if(topOrBottomPercentOfResults) { //top n% of results
-				filteredResults = filterResults(true, percentValue, normalized);
+				filteredResults = filterResults(true, percentValue, rawDataset);
 				printResults(filteredResults);
 			}
 			else { //bottom n% of results
-				filteredResults = filterResults(false, percentValue, normalized);
+				filteredResults = filterResults(false, percentValue, rawDataset);
 				printResults(filteredResults);
 			}
 		}
 		
-		return normalized;
+		return rawDataset;
 		
 	}
 
-	private void addNormalizedDatatoRawDataset(List<DiscretizedColumn> normalized) {
-		for(DiscretizedColumn dc : normalized) {
-			for(int i=0 ;i<dc.getIndexInRawDataset().size(); i++) {
-				rawDataset.get(dc.getIndexInRawDataset().get(i)).setNormalizedDataValue(dc.getNormalizedValues().get(i));
-				rawDataset.get(dc.getIndexInRawDataset().get(i)).setSectorId(dc.getColumnId());
+	private void exportNormalizedDataToDataset(List<DiscretizedColumn> input){ //add normalized vals to basic dataset
+		
+		for(DiscretizedColumn dc : input) {
+			for(int i=0;i<dc.getElementsInSector().size();i++) { //here to mark everything to dATA set
+				//get index from raw dataset and put data on this index in raw dataset
+				int indexInRawDataset=dc.getIndexInRawDataset().get(i); //put normalized value on this index
+				double normalizedValue = dc.getNormalizedValues().get(i); //put this data in rawdataset
+				rawDataset.get(indexInRawDataset).setNormalizedDataValue(normalizedValue);
+				rawDataset.get(indexInRawDataset).setSectorId(dc.getColumnId());
 			}
-		}
-		System.out.println("");
-	}
-
-
-
-	private void printResults(List<Double> normalized) {
-		for(Double dc : normalized) {
-			System.out.println(dc.toString());
 		}
 		
 	}
 
-	private List<Double> filterResults(boolean b, int percent, List<DiscretizedColumn> normalized) {
-		List<Double> allValues = new ArrayList<>();
-		for(DiscretizedColumn dc: normalized) {
-			for(Double value : dc.getNormalizedValues()) {
-				allValues.add(value);
-			}
+
+
+	private void printResults(List<Data> normalized) {
+		for(Data dc : normalized) {
+			System.out.println(dc.getNormalizedDataValue());
 		}
-		if(b ==true) // we need N% of the smallest results
-			Collections.reverse(allValues);
+		
+	}
+
+	private List<Data> filterResults(boolean b, int percent, List<Data> raw) {
+		List<Data> filteredList = new ArrayList<>();
+		raw.sort(new NormalizedDataComparator());
+		if(b ==true) { // we need N% of the smallest results
+			Collections.reverse(raw);
+		}
+
 		else {
-			Collections.sort(allValues);
+			
 		}
 		//after sorting we just need to pick n% of first results (size*0,n%)
-		double howManyResultsToReturn=allValues.size()*(0.01*percent);
-		List<Double> toReturn = new ArrayList<>();
+		double howManyResultsToReturn=raw.size()*(0.01*percent);
 		for(int i=0; i<howManyResultsToReturn; i++) {
-			toReturn.add(allValues.get(i));
+			filteredList.add(raw.get(i));
 		}
 		
-		return toReturn;
+		return filteredList;
 	}
 
 }

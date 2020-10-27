@@ -40,5 +40,8 @@
       <Button fx:id="draw2dPlotButton" layoutX="16.0" layoutY="472.0" mnemonicParsing="false" onAction="#draw2dplot" text="draw 2d" />
       <Button fx:id="draw3dPlotButton" layoutX="108.0" layoutY="472.0" mnemonicParsing="false" onAction="#draw3dplot" text="draw 3d" />
       <Text layoutX="17.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="provide column id in raw dataset or n to use normalized data" wrappingWidth="174.83447265625" />
+      <TextField fx:id="histogramTextField" layoutX="70.0" layoutY="520.0" prefHeight="27.0" prefWidth="37.0" />
+      <Button fx:id="histogramButton" layoutX="29.0" layoutY="555.0" mnemonicParsing="false" onAction="#createHistogram" text="Create histogram" />
+      <Text layoutX="8.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnId" />
    </children>
 </AnchorPane>

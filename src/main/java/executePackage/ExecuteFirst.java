@@ -87,16 +87,29 @@ public class ExecuteFirst {
 	}
 
 	private void exportNormalizedDataToDataset(List<DiscretizedColumn> input){ //add normalized vals to basic dataset
+		//do zmiany bo sie wypierdala
+		List<Data> newDataset = new ArrayList<>();
 		
-		for(DiscretizedColumn dc : input) {
-			for(int i=0;i<dc.getElementsInSector().size();i++) { //here to mark everything to dATA set
-				//get index from raw dataset and put data on this index in raw dataset
-				int indexInRawDataset=dc.getIndexInRawDataset().get(i); //put normalized value on this index
-				double normalizedValue = dc.getNormalizedValues().get(i); //put this data in rawdataset
-				rawDataset.get(indexInRawDataset).setNormalizedDataValue(normalizedValue);
-				rawDataset.get(indexInRawDataset).setSectorId(dc.getColumnId());
+		for(DiscretizedColumn dc: input) {
+			for(int i=0; i<dc.getElementsInSector().size();i++) {
+				int indexInRawDataset=dc.getIndexInRawDataset().get(i);
+				Data d = rawDataset.get(indexInRawDataset);
+				double normalizedValue = dc.getNormalizedValues().get(i);
+				d.setNormalizedDataValue(normalizedValue);
+				d.setSectorId(dc.getColumnId());
+				newDataset.add(d);
 			}
 		}
+		rawDataset = newDataset;
+//		for(DiscretizedColumn dc : input) {
+//			for(int i=0;i<dc.getElementsInSector().size();i++) { //here to mark everything to dATA set
+//				//get index from raw dataset and put data on this index in raw dataset
+//				int indexInRawDataset=dc.getIndexInRawDataset().get(i); //put normalized value on this index
+//				double normalizedValue = dc.getNormalizedValues().get(i); //put this data in rawdataset
+//				rawDataset.get(indexInRawDataset).setNormalizedDataValue(normalizedValue);
+//				rawDataset.get(indexInRawDataset).setSectorId(dc.getColumnId());
+//			}
+//		}
 		
 	}
 

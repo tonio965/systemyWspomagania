@@ -29,7 +29,7 @@ public class ReadFromFileWithHeaders {
 		          if(first =='#') //if is commented line or empty 
 		        	  continue;
 		          else {
-		        	  if(!hasLineWithHeaderHappened && !hasHeader) { //will happen only once if header option is off - it skips the fist notnull nor commented line
+		        	  if(!hasLineWithHeaderHappened && hasHeader) { //will happen only once if header option is off - it skips the fist notnull nor commented line
 			        	  hasLineWithHeaderHappened=true;
 			        	  continue;
 		        	  }

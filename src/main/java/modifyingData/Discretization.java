@@ -56,11 +56,6 @@ public class Discretization {
 			int counter=0;
 			for(Double value : oneColumn) { //here im looping inside the data set and i will be adding data to separate DiscretizedColumn set regarding the value in the column
 				
-				if(hasHeader && counter==0) {
-					counter++;
-					continue; //if a header skip an iteration
-				}
-				else { //if is not the header
 					for(DiscretizedColumn dc : discretizedColumns) {	
 						if(value >= dc.getSectorMin() && value<= dc.getSectorMax()) {
 							dc.addToIndexInRawDataset(counter);
@@ -69,7 +64,7 @@ public class Discretization {
 						}
 					}
 						
-				}
+				
 				
 				counter++;
 			}
@@ -85,13 +80,7 @@ public class Discretization {
 		List<Double> oneColumn = new ArrayList<>();
 		int iterator = 0;
 		for(Data d : data) {
-			if(hasHeader && iterator==0) { //if has header skip the firstline
-				iterator++;
-				continue;
-			}
-			else {
-				oneColumn.add(Double.parseDouble(d.getData()[columnId]));
-			}
+			oneColumn.add(Double.parseDouble(d.getData()[columnId]));
 		}
 		Double [] myArray = new Double[oneColumn.size()];
 		return oneColumn.toArray(myArray);

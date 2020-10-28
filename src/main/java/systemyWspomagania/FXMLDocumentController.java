@@ -289,7 +289,7 @@ public class FXMLDocumentController implements Initializable{
     		minValue= Double.valueOf(minValueTextField.getText());
     	}
     	if(!maxValueTextField.getText().equals("")) {
-    		minValue= Double.valueOf(maxValueTextField.getText());
+    		maxValue= Double.valueOf(maxValueTextField.getText());
     	}
     	
     	

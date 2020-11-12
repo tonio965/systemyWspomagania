@@ -24,9 +24,9 @@ public class ReadFromFileWithHeaders {
 	        Scanner myReader = new Scanner(myFile);
 	        while (myReader.hasNextLine()) {
 	          String data = myReader.nextLine();
-	          if(data.length()>0) {
+	          if(data.length()>0) { //if not empty
 		          char first = data.charAt(0);
-		          if(first =='#') //if is commented line or empty 
+		          if(first =='#') //if is commented line 
 		        	  continue;
 		          else {
 		        	  if(!hasLineWithHeaderHappened && hasHeader) { //will happen only once if header option is off - it skips the fist notnull nor commented line

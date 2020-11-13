@@ -155,23 +155,6 @@ public class FXMLDocumentController implements Initializable, DataSender{
     private MenuItem LoadDataButton;
     
     
-    @FXML
-    void digitizeStringColumn(ActionEvent event) throws IOException {
-    	
-    	FXMLLoader secondloader = new FXMLLoader(getClass().getResource("/FXMLDigitizeData.fxml"));
-    	Parent pane2 = (Parent) secondloader.load();
-    	FXMLLoadDataController thirdController = secondloader.getController();
-    	thirdController.setSendDataSender(this);
-    	thirdController.sendCurrentList(dataInSeparateColumns);
-    	Stage stage = new Stage();
-    	stage.setTitle("Data select");
-    	stage.setScene(new Scene(pane2));
-    	stage.show();
-
-    }
-    
-    
-    
     
     //this one loads a popup window allowing to set file to display in a tableview
     @FXML
@@ -185,6 +168,21 @@ public class FXMLDocumentController implements Initializable, DataSender{
     	stage.setTitle("Data select");
     	stage.setScene(new Scene(pane));
     	stage.show();
+    }
+    
+    @FXML
+    void digitizeStringColumn(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader secondloader = new FXMLLoader(getClass().getResource("/FXMLDigitizeData.fxml"));
+    	Parent pane2 = (Parent) secondloader.load();
+    	FXMLDigitizeDataController thirdController = secondloader.getController();
+    	thirdController.setSendDataSender(this);
+    	thirdController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("digitize string column");
+    	stage.setScene(new Scene(pane2));
+    	stage.show();
+
     }
 
     @FXML
@@ -500,7 +498,8 @@ public class FXMLDocumentController implements Initializable, DataSender{
 	private void populateTableViewWithData2(List<DataColumn> dataToPopulate2) {
 		ObservableList<ObservableList> myData;
 		myData = FXCollections.observableArrayList();
-		
+		TableView1.getColumns().clear();
+		TableView1.getItems().clear();
         for (int i = 0; i < dataToPopulate2.size(); i++) {
             //We are using non property style for making dynamic table
             final int j = i;

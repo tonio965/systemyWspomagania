@@ -52,6 +52,7 @@
             <items>
                   <MenuItem fx:id="LoadDataButton" mnemonicParsing="false" onAction="#loadDataScreen" text="loadData" />
                   <MenuItem fx:id="digitizeStringColumnBtn" mnemonicParsing="false" onAction="#digitizeStringColumn" text="digitize string column" />
+                  <MenuItem fx:id="minMaxMenuButton" mnemonicParsing="false" onAction="#minMaxMenuButtonClicked" text="Filter min/max" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>

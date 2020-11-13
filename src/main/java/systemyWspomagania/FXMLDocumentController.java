@@ -83,7 +83,8 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem digitizeStringColumnBtn;
 	
-	
+    @FXML
+    private MenuItem minMaxMenuButton;
 	
 	
 
@@ -154,6 +155,19 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem LoadDataButton;
     
+    
+    @FXML
+    void minMaxMenuButtonClicked(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLMinMaxFilter.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLMinMaxFilterController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Data filter");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
     
     
     //this one loads a popup window allowing to set file to display in a tableview

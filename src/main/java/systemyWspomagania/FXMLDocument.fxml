@@ -48,9 +48,10 @@
       <Text layoutX="8.0" layoutY="538.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ColumnId" />
       <MenuBar layoutX="5.0" layoutY="2.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Load data">
+          <Menu mnemonicParsing="false" text="Data">
             <items>
                   <MenuItem fx:id="LoadDataButton" mnemonicParsing="false" onAction="#loadDataScreen" text="loadData" />
+                  <MenuItem fx:id="digitizeStringColumnBtn" mnemonicParsing="false" onAction="#digitizeStringColumn" text="digitize string column" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>

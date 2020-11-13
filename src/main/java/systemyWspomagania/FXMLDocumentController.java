@@ -79,6 +79,13 @@ public class FXMLDocumentController implements Initializable, DataSender{
 	
 	List<DataColumn> dataInSeparateColumns;
 	//annotated fields generated automatically
+	
+    @FXML
+    private MenuItem digitizeStringColumnBtn;
+	
+	
+	
+	
 
     @FXML
     private AnchorPane ParentPane;
@@ -146,6 +153,24 @@ public class FXMLDocumentController implements Initializable, DataSender{
     
     @FXML
     private MenuItem LoadDataButton;
+    
+    
+    @FXML
+    void digitizeStringColumn(ActionEvent event) throws IOException {
+    	
+    	FXMLLoader secondloader = new FXMLLoader(getClass().getResource("/FXMLDigitizeData.fxml"));
+    	Parent pane2 = (Parent) secondloader.load();
+    	FXMLLoadDataController thirdController = secondloader.getController();
+    	thirdController.setSendDataSender(this);
+    	thirdController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Data select");
+    	stage.setScene(new Scene(pane2));
+    	stage.show();
+
+    }
+    
+    
     
     
     //this one loads a popup window allowing to set file to display in a tableview

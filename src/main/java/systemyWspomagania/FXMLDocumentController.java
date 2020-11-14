@@ -159,6 +159,25 @@ public class FXMLDocumentController implements Initializable, DataSender{
     private MenuItem LoadDataButton;
     
     @FXML
+    private MenuItem discretizeColumnBtn;
+    
+
+    @FXML
+    void discretizeColumnBtnClicked(ActionEvent event) throws IOException {
+
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLDiscretize.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLDiscretizeController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Discretize data");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
+    
+    
+    @FXML
     void percentMenuButtonClicked(ActionEvent event) throws IOException {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLResultsPercentage.fxml"));
     	Parent pane = (Parent) loader.load();

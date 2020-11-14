@@ -136,25 +136,4 @@ public class FXMLResultsPercentageController implements Initializable {
 		
 	}
 	
-	public static int[] maxKIndex(double[] array, int top_k) {
-		
-		
-	    double[] max = new double[top_k];
-	    int[] maxIndex = new int[top_k];
-	    Arrays.fill(max, Double.NEGATIVE_INFINITY);
-	    Arrays.fill(maxIndex, -1);
-
-	    top: for(int i = 0; i < array.length; i++) {
-	        for(int j = 0; j < top_k; j++) {
-	            if(array[i] > max[j]) {
-	                for(int x = top_k - 1; x > j; x--) {
-	                    maxIndex[x] = maxIndex[x-1]; max[x] = max[x-1];
-	                }
-	                maxIndex[j] = i; max[j] = array[i];
-	                continue top;
-	            }
-	        }
-	    }
-	    return maxIndex;
-	}
 }

@@ -161,6 +161,23 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem discretizeColumnBtn;
     
+    @FXML
+    private MenuItem normalizeColumnButton;
+    
+    @FXML
+    void normalizeColumnButtonClick(ActionEvent event) throws IOException {
+    	System.out.println("click");
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLNormalize.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLNormalizeController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Normalize data");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
+    
 
     @FXML
     void discretizeColumnBtnClicked(ActionEvent event) throws IOException {

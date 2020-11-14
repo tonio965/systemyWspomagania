@@ -55,6 +55,7 @@
                   <MenuItem fx:id="minMaxMenuButton" mnemonicParsing="false" onAction="#minMaxMenuButtonClicked" text="Filter min/max" />
                   <MenuItem fx:id="percentMenuButton" mnemonicParsing="false" onAction="#percentMenuButtonClicked" text="Show % of results" />
                   <MenuItem fx:id="discretizeColumnBtn" mnemonicParsing="false" onAction="#discretizeColumnBtnClicked" text="Discretize column" />
+                  <MenuItem fx:id="normalizeColumnButton" mnemonicParsing="false" onAction="#normalizeColumnButtonClick" text="Normalize column" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>

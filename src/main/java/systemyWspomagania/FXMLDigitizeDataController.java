@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 import models.DataColumn;
 
 public class FXMLDigitizeDataController implements Initializable {
@@ -60,6 +61,8 @@ public class FXMLDigitizeDataController implements Initializable {
     	}
     	listOfCols.add(numerizedColumn);
     	dataSender.send(listOfCols);
+        Stage stage = (Stage) comboBox.getScene().getWindow();
+        stage.close();
     }
     
     //receive list from main screen

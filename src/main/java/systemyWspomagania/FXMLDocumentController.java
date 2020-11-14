@@ -127,6 +127,9 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private TableView TableView1;
     
+    @FXML
+    private MenuItem percentMenuButton;
+    
 
     @FXML
     private ScatterChart<?, ?> scatterChart1;
@@ -155,6 +158,18 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem LoadDataButton;
     
+    @FXML
+    void percentMenuButtonClicked(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLResultsPercentage.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLResultsPercentageController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Data filter");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
     
     @FXML
     void minMaxMenuButtonClicked(ActionEvent event) throws IOException {

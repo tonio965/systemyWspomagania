@@ -122,6 +122,20 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private TextField histogramTextField;
     ///zostaje
+    ///zostaje 
+    @FXML
+    private MenuItem twoDgraphButton;
+    ///zostaje
+    @FXML
+    private MenuItem threeDgraphButton;
+    ///zostaje
+    @FXML
+    private MenuItem histogramGraphDrawButton;
+    
+    
+    
+    
+    
     @FXML
     private Button histogramButton;
     
@@ -133,6 +147,54 @@ public class FXMLDocumentController implements Initializable, DataSender{
     
     @FXML
     private MenuItem normalizeColumnButton;
+    
+    
+
+    @FXML
+    void threeDgraphButtonClick(ActionEvent event) throws IOException {
+    	
+    	System.out.println("click");
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLCreate3DPlot.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLCreate3DPlotController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Create histogram");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+
+    }
+
+    @FXML
+    void twoDgraphButtonClick(ActionEvent event) throws IOException {
+    	
+    	System.out.println("click");
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLCreate2DPlot.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLCreate2DPlotController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Create histogram");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+
+    }
+    
+    @FXML
+    void histogramGraphDrawButtonClick(ActionEvent event) throws IOException {
+    	System.out.println("click");
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLCreateHistogramPlot.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLCreateHistogramPlotController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Create histogram");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
     
     @FXML
     void normalizeColumnButtonClick(ActionEvent event) throws IOException {

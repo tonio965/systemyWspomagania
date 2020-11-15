@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="263.0" prefWidth="384.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="systemyWspomagania.FXMLCreate2DPlotController">
+   <children>
+      <ComboBox fx:id="comboBox" layoutX="117.0" layoutY="45.0" prefWidth="150.0" />
+      <ComboBox fx:id="comboBox2" layoutX="117.0" layoutY="106.0" prefWidth="150.0" />
+      <Button fx:id="button" layoutX="166.0" layoutY="168.0" mnemonicParsing="false" onAction="#buttonClick" text="Button" />
+      <Label layoutX="45.0" layoutY="49.0" text="X axis data" />
+      <Label layoutX="45.0" layoutY="110.0" text="Y axis data" />
+   </children>
+</AnchorPane>

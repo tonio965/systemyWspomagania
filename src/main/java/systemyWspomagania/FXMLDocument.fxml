@@ -38,8 +38,11 @@
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Graphs">
             <items>
+                  <MenuItem fx:id="twoDgraphButton" mnemonicParsing="false" onAction="#twoDgraphButtonClick" text="Draw 2D Chart" />
+                  <MenuItem fx:id="threeDgraphButton" mnemonicParsing="false" onAction="#threeDgraphButtonClick" text="Draw 3D Chart" />
+                  <MenuItem fx:id="histogramGraphDrawButton" mnemonicParsing="false" onAction="#histogramGraphDrawButtonClick" text="Draw histogram" />
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>

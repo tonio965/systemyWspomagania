@@ -86,7 +86,6 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem minMaxMenuButton;
 	
-	
 
     @FXML
     private AnchorPane ParentPane;
@@ -97,47 +96,14 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem percentMenuButton;
     
-
-    @FXML
-    private ScatterChart<?, ?> scatterChart1;
-    
-    
-    
-    ///zostaje
-    @FXML
-    private TextField scatterplotXtextField;
-    ///zostaje
-    @FXML
-    private TextField scatterplotYextField;
-    ///zostaje
-    @FXML
-    private TextField scatterplotZextField;
-    ///zostaje
-    @FXML
-    private Button draw2dPlotButton;
-    ///zostaje
-    @FXML
-    private Button draw3dPlotButton;
-    ///zostaje
-    @FXML
-    private TextField histogramTextField;
-    ///zostaje
-    ///zostaje 
     @FXML
     private MenuItem twoDgraphButton;
-    ///zostaje
+ 
     @FXML
     private MenuItem threeDgraphButton;
-    ///zostaje
+
     @FXML
     private MenuItem histogramGraphDrawButton;
-    
-    
-    
-    
-    
-    @FXML
-    private Button histogramButton;
     
     @FXML
     private MenuItem LoadDataButton;
@@ -281,176 +247,6 @@ public class FXMLDocumentController implements Initializable, DataSender{
     	stage.show();
 
     }
-
-    @FXML
-    void createHistogram(ActionEvent event) {
-
-    	String columnId = histogramTextField.getText().toString();
-    	System.out.println("breakpoint");
-    	List<String> dataFromColumn = new ArrayList<>();
-    	int counter = 0;
-    	boolean isNum =isDouble(columnId);
-    	for(Data d : dataToPopulate) { //im taking only the column selected from filtered/%tented dataset
-//    		if(counter == 0 && headerCheckbox.isSelected()) {
-//    			counter++;
-//    			continue;
-//    		}
-    		if(columnId.equals("n")) { //user selected a normalized column 
-    			dataFromColumn.add(String.valueOf(d.getNormalizedDataValue()));
-    		}
-    		else { //user provided a column id from dataset
-    			dataFromColumn.add(String.valueOf(d.getData()[Integer.valueOf(columnId)]));
-    			
-    		}
-    	}
-    		
-    		//now im creating a unique values set from the list 
-    		Set<String> uniqueValues = new HashSet<>(dataFromColumn);
-    		int [] occurencesCounter = new int [uniqueValues.size()];
-    		int ctr=0;
-    		//now i have unique values set and now i will create a list sized as this set and count occurences in the columnlist
-    		for(String value : uniqueValues) { //iterate thorugh a set
-    			
-    			for(int i=0;i<dataFromColumn.size();i++) { //iterating through a full set (a column)
-    				if(value.equals(dataFromColumn.get(i))){ //if a value from set equals with the raw column i add 1 to the corresponding space in array
-    					occurencesCounter[ctr]++; //added one
-    				}
-    			}
-    			ctr++;
-    		//here set is full of unique vals and occurences counter has amount of occurences on the same index as in the set
-    		}
-    		String[] setArray = new String[uniqueValues.size()]; //string array from set
-    		setArray = uniqueValues.toArray(setArray);
-    		
-    		
-        	Table myData =
-        		    Table.create("barchart data")
-        		        .addColumns(
-        		            StringColumn.create("first", setArray),
-        		            IntColumn.create("second", occurencesCounter));
-        	
-        	  Plot.show(
-        		        VerticalBarPlot.create(
-        		            "histogram", // plot title
-        		            myData, // table
-        		            "first", // grouping column name
-        		            "second")); // numeric column name
-
-    		
-    		
-    	
-    }
-    
-    @FXML
-    void draw2dplot(ActionEvent event) {
-
-    	String [] first = new String [dataToPopulate.size()];
-    	String [] second = new String [dataToPopulate.size()];
-    	String xVal = scatterplotXtextField.getText().toString();
-    	String yVal = scatterplotYextField.getText().toString();
-    	System.out.println("breakpoint");
-		for(int i=0;i<dataToPopulate.size(); i++) {
-			
-			
-	    	if(xVal.equals("n")) {
-	    		first[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
-	    	}
-	    	else {
-	    		int option=Integer.valueOf(xVal);
-	    		first[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
-	    	}
-	    	if(yVal.equals("n")) {
-	    		second[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
-	    	}
-	    	else {
-	    		int option=Integer.valueOf(yVal);
-	    		second[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
-	    	}
-		}
-		
-    	Table myData =
-    		    Table.create("Cute data")
-    		        .addColumns(
-    		            StringColumn.create("first", first),
-    		            StringColumn.create("second", second));
-
-    	Plot.show(
-    			ScatterPlot.create("2D Plot", 
-    		                       myData, "first", "second")); //2dplot
-    	
-    	
-    }
-
-    @FXML
-    void draw3dplot(ActionEvent event) {
-
-    	String [] first = new String [dataToPopulate.size()];
-    	String [] second = new String [dataToPopulate.size()];
-    	String [] third = new String [dataToPopulate.size()];
-    	String xVal = scatterplotXtextField.getText().toString();
-    	String yVal = scatterplotYextField.getText().toString();
-    	String zVal = scatterplotZextField.getText().toString();
-		for(int i=0;i<dataToPopulate.size(); i++) {
-			
-	    	if(xVal.equals("n")) {
-	    		first[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
-	    	}
-	    	else {
-	    		int option=Integer.valueOf(xVal);
-	    		first[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
-	    	}
-	    	
-	    	
-	    	if(yVal.equals("n")) {
-	    		second[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
-	    	}
-	    	else {
-	    		int option=Integer.valueOf(yVal);
-	    		second[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
-	    	}
-	    	
-	    	
-	    	if(zVal.equals("n")) {
-	    		third[i]=String.valueOf(dataToPopulate.get(i).getNormalizedDataValue());
-	    	}
-	    	else {
-	    		int option=Integer.valueOf(zVal);
-	    		third[i]=String.valueOf(dataToPopulate.get(i).getData()[option]);
-	    	}
-	    	
-		}
-    	Table myData =
-    		    Table.create("Cute data")
-    		        .addColumns(
-    		            StringColumn.create("first", first),
-    		            StringColumn.create("second", second),
-    		            StringColumn.create("third", third));
-    	Plot.show(
-    			Scatter3DPlot.create("3d Plot", 
-    		                       myData, "first", "second", "third")); //3dplot
-    }
-    
-    //onclick on select etc
-    
-
-	private void createScatterChart(List<Data> rawDataset, int i, int j) {
-		XYChart.Series dataSeries1 = new XYChart.Series();
-		dataSeries1.setName("Scattered data");
-		int counter=0;
-		for(Data d: rawDataset) {
-//			if(counter ==0 && headerCheckbox.isSelected()) {
-//				counter++;
-//				continue;
-//			}
-//			else {
-				dataSeries1.getData().add(new XYChart.Data( d.getData()[i], Double.valueOf(d.getData()[j])));
-				counter++;
-//			}
-		}
-		scatterChart1.getData().add(dataSeries1);
-		
-	}
-
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -468,50 +264,7 @@ public class FXMLDocumentController implements Initializable, DataSender{
 		
 	}
 	
-//    private void populateTableViewWithData(List<Data> rawDataset) {
-//    	ObservableList<Data> allData = FXCollections.observableArrayList();
-//
-//    	
-//    	int counter = 0;
-//    	for(Data d : rawDataset) {
-//    		if(headerCheckbox.isSelected() && counter ==0 ) {
-//    			counter++;
-//    			continue;
-//    		}
-//    		else {
-//        		allData.add(d); 
-//        		counter++;
-//    		}
-//
-//    	}
-//    	System.out.println("breakpoint");
-//    	TableColumn sectorIdColumn = new TableColumn("sectorid");
-//    	sectorIdColumn.setCellValueFactory(new PropertyValueFactory<>("sectorId"));
-//    	
-//    	TableColumn normalizedColumnData = new TableColumn("normalizedCol");
-//    	normalizedColumnData.setCellValueFactory(new PropertyValueFactory<>("normalizedDataValue"));
-//    	
-//    	TableColumn  dataColumn = new TableColumn("combinedData");
-//    	dataColumn.setCellValueFactory(new PropertyValueFactory<>("combinedData"));
-//    	
-//    	TableView1.setItems(allData);
-//    	TableView1.getColumns().addAll(sectorIdColumn,dataColumn,normalizedColumnData);
-    	
-    	
-    	
-//    	Table myData =
-//    		    Table.create("Cute data")
-//    		        .addColumns(
-//    		            StringColumn.create("zero", zeroColumn),
-//    		            StringColumn.create("firsr", first),
-//    		            StringColumn.create("third", mean));
-//    	Plot.show(
-//    			Scatter3DPlot.create("3d Plot", 
-//    		                       myData, "zero", "firsr", "third")); //3dplot
-//    	Plot.show(
-//    			ScatterPlot.create("2D Plot", 
-//    		                       myData, "zero", "firsr")); //2dplot
-    //}
+
     
 	public boolean isDouble( String input ) {
 	    try {

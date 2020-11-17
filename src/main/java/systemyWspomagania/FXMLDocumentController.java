@@ -114,6 +114,25 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem normalizeColumnButton;
     
+    @FXML
+    private MenuItem KNNButton;
+
+    @FXML
+    void KNNButtonClick(ActionEvent event) throws IOException {
+
+    	System.out.println("click");
+    	//zmien
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLknn.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLknnController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("KNN");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
+    
     
 
     @FXML

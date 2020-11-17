@@ -30,9 +30,9 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="KNN items">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="KNNButton" mnemonicParsing="false" onAction="#KNNButtonClick" text="KNN" />
             </items>
           </Menu>
         </menus>

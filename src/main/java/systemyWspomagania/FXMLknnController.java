@@ -15,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import models.DataColumn;
+import models.DataColumnRow;
 
 public class FXMLknnController implements Initializable{
 
@@ -44,15 +45,63 @@ public class FXMLknnController implements Initializable{
     private TextArea textArea1;
     
     private List<ComboBox> dynamicComboBoxes;
+    
+    private List<DataColumnRow> rows;
     @FXML
     void buttonClick(ActionEvent event) {
 
+    	populateRows();
+    	System.out.println("breakpoint");
     }
 	
+	private void populateRows() {
+		List<String> columnNames = new ArrayList<>();
+		int [] columnIds;
+		
+		
+		//get names from not empty comboBoxes
+		for(int i=0;i<dynamicComboBoxes.size();i++) {
+			
+			if(!dynamicComboBoxes.get(i).getValue().toString().equals("")) {
+				columnNames.add(dynamicComboBoxes.get(i).getValue().toString());
+			}
+
+		}
+		
+		//now when i know how many not empty columns there is
+		columnIds = new int[columnNames.size()];
+		
+		//get ids of corresponding columns
+		for(int i=0;i<columnNames.size();i++) {
+			
+			for(int j=0; j<listOfCols.size(); j++) {
+				if(columnNames.get(i).equals(listOfCols.get(i).getTitle())) {
+					columnIds[i]=j;
+				}
+				
+			}
+		}
+		
+		//now i can start making rows and fill it with the data
+		for(int i=0 ; i<listOfCols.get(0).getContents().size(); i++) {
+			
+			DataColumnRow dcr = new DataColumnRow();
+			for(int j=0;j<columnIds.length; j++) {
+				dcr.addData(listOfCols.get(columnIds[j]).getContents().get(i));
+			}
+			rows.add(dcr);
+			
+		}
+		
+		
+		
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		listOfCols = new ArrayList<>();
 		dynamicComboBoxes = new ArrayList<>();
+		rows = new ArrayList<>();
 		
 	}
 

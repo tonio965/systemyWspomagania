@@ -2,6 +2,7 @@ package systemyWspomagania;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -9,6 +10,8 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
+import HelperClasses.DistanceComparator;
+import HelperClasses.ValueWrapperToSortComparator;
 import interfaces.DataSender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -84,6 +87,7 @@ public class FXMLknnController implements Initializable{
 			}
 			
 			//sort and provide closest neighbours
+			showClosestNeighbours();
 		}
 		else {
 			//calculate mean for each column of data
@@ -95,8 +99,11 @@ public class FXMLknnController implements Initializable{
 				Distance d = new Distance();
 				d.setId(i);
 				d.setDistance(mahalanobisDistance(values));
+				d.setDistance(Math.abs(distanceFromMeanOfGivenValues-d.getDistance()));
 				distancesFromMean.add(d);
 			}
+			distances = distancesFromMean;
+			showClosestNeighbours();
 
 			
 			
@@ -106,6 +113,29 @@ public class FXMLknnController implements Initializable{
 		
 	}
 	
+	private void showClosestNeighbours() {
+		String howManyToShow = neighboursTextField.getText().toString();
+		int neighboursAmount = Integer.valueOf(howManyToShow);
+		
+		String decisionClassName = comboBox.getValue().toString();
+		int decisionColumnId =0;
+		
+		for(int i=0 ; i < listOfCols.size() ; i++) {
+			if(listOfCols.get(i).getTitle().equals(decisionClassName))
+				decisionColumnId=i;
+		}
+		distances.sort(new DistanceComparator());
+		
+		List<String> results = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i< neighboursAmount ;i++) {
+			sb.append(listOfCols.get(decisionColumnId).getContents().get(distances.get(i).getId()))
+				.append("\n");
+			textArea1.setText(sb.toString());
+		}
+		
+	}
+
 	private double mahalanobisDistance(String[] givenValues) {
 		List<Double> meanColumnValues = new ArrayList<>();
 		List<Double> providedValues = new ArrayList<>();
@@ -151,8 +181,8 @@ public class FXMLknnController implements Initializable{
 		//obliczam maciez kowariancji z apache commons
 		RealMatrix mx = MatrixUtils.createRealMatrix(valuesMatrix);
 		RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
-		RealMatrix inversed = MatrixUtils.inverse(cov);
 		double [][] covarianceMatrix = cov.getData();
+		RealMatrix inversed = MatrixUtils.inverse(cov);
 		double [][] inversedCovarianceMatrix = inversed.getData();
 		
 		RealMatrix p1 = horizontalMatrix.multiply(inversed);

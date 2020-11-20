@@ -130,6 +130,7 @@ public class FXMLknnController implements Initializable{
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i< neighboursAmount ;i++) {
 			sb.append(listOfCols.get(decisionColumnId).getContents().get(distances.get(i).getId()))
+				.append(" dist: ").append(distances.get(i).getDistance())
 				.append("\n");
 			textArea1.setText(sb.toString());
 		}
@@ -141,7 +142,7 @@ public class FXMLknnController implements Initializable{
 		List<Double> providedValues = new ArrayList<>();
 		List<Double> givenMinusMeanValues = new ArrayList<>();
 		
-		double[][] valuesMatrix = new double[rows.get(0).getData().size()][rows.size()];
+		double[][] valuesMatrix = new double[rows.size()][rows.get(0).getData().size()];
 		
 		for(int x=0; x< givenValues.length ; x++) {
 			providedValues.add(Double.valueOf(givenValues[x]));
@@ -152,7 +153,7 @@ public class FXMLknnController implements Initializable{
 			double sumInColumn =0;
 			for(int j=0; j<rows.size(); j++) {
 				sumInColumn+=Double.valueOf(rows.get(j).getData().get(i));
-				valuesMatrix[i][j]=Double.valueOf(rows.get(j).getData().get(i));
+				valuesMatrix[j][i]=Double.valueOf(rows.get(j).getData().get(i));
 			}
 			meanColumnValues.add(sumInColumn/rows.size());
 		}
@@ -185,8 +186,8 @@ public class FXMLknnController implements Initializable{
 		RealMatrix inversed = MatrixUtils.inverse(cov);
 		double [][] inversedCovarianceMatrix = inversed.getData();
 		
-		RealMatrix p1 = horizontalMatrix.multiply(inversed);
-		RealMatrix p2 = p1.multiply(verticalMatrix);
+		RealMatrix p1 = verticalMatrix.multiply(inversed);
+		RealMatrix p2 = p1.multiply(horizontalMatrix);
 		
 		double [][] distance = p2.getData();
 		double dist=0;

@@ -98,7 +98,7 @@ public class FXMLknnController implements Initializable{
 				rows.get(i).getData().toArray(values);
 				Distance d = new Distance();
 				d.setId(i);
-				d.setDistance(mahalanobisDistance(values));
+				d.setDistance(Math.sqrt(mahalanobisDistance(values)));
 				d.setDistance(Math.abs(distanceFromMeanOfGivenValues-d.getDistance()));
 				distancesFromMean.add(d);
 			}
@@ -179,7 +179,7 @@ public class FXMLknnController implements Initializable{
 		
 		RealMatrix horizontalMatrix = MatrixUtils.createRealMatrix(horizontalMatrixGiven);
 		
-		//obliczam maciez kowariancji z apache commons
+		//obliczam maciez kowariancji
 		RealMatrix mx = MatrixUtils.createRealMatrix(valuesMatrix);
 		RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
 		double [][] covarianceMatrix = cov.getData();

@@ -1,6 +1,8 @@
 package systemyWspomagania;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -86,7 +88,9 @@ public class FXMLDocumentController implements Initializable, DataSender{
     @FXML
     private MenuItem minMaxMenuButton;
 	
-
+    @FXML
+    private MenuItem saveToFileButton;
+    
     @FXML
     private AnchorPane ParentPane;
     
@@ -267,6 +271,37 @@ public class FXMLDocumentController implements Initializable, DataSender{
 
     }
     
+    @FXML
+    void saveToFileButtonClick(ActionEvent event) {
+    	System.out.println("saving to file");
+        String str = "Hello";
+        BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter("savedData.txt"));
+			StringBuffer sb = new StringBuffer();
+			for(int i=0;i<dataInSeparateColumns.size(); i++) {
+				sb.append(dataInSeparateColumns.get(i).getTitle()).append(" ");
+			}
+			sb.append("\n");
+	        writer.write(sb.toString());
+	        
+			StringBuffer sb2 = new StringBuffer();
+			for(int i=0;i<dataInSeparateColumns.size(); i++) {
+				
+				for(int j =0 ; j<dataInSeparateColumns.get(i).getContents().size() ; j++) {
+					sb2.append(dataInSeparateColumns.get(i).getContents().get(j)).append(" ");
+				}
+				sb2.append("\n");
+				writer.write(sb2.toString());
+			}
+	        
+	        writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		dataToPopulate = new ArrayList<>();
@@ -322,7 +357,7 @@ public class FXMLDocumentController implements Initializable, DataSender{
             });
 
             TableView1.getColumns().addAll(col);
-            System.out.println("Column [" + i + "] ");
+//            System.out.println("Column [" + i + "] ");
         }
             
             

@@ -84,7 +84,7 @@ public class FXMLLoadDataController  implements Initializable{
     	//getting data from checkboxes etc
     	boolean headers = headerCheckbox.isSelected();
     	String path = selectedFile.getAbsolutePath();
-    	
+    	int linesRead=0;
     	File myFile = new File(path);
     	boolean hasLineWithHeaderHappened = false;
     	Scanner myReader = new Scanner(myFile);
@@ -106,7 +106,26 @@ public class FXMLLoadDataController  implements Initializable{
 		        		  dc.setTitle(strArray[i]);
 		        		  listOfCols.add(dc);
 		        	  }
-		          } //if its not a header line 
+		          } //if its not a header line and no headers
+//		          if(!hasLineWithHeaderHappened && !headers) { //if file has headers but not yet found any
+//		        	  hasLineWithHeaderHappened=true;
+//		        	  Scanner titleScanner = new Scanner(myFile);
+//		        	  String myData = null;
+//		        	  int lines =0;
+//		        	  while(lines<linesRead) {
+//		        		   myData = titleScanner.nextLine();
+//		        		   lines ++;
+//		        	  }
+//		        	  String[] strArray = data.split(" |\\\t|\\;"); //now i know how many columns the dataset has so i can initialize an array
+//		        	  int size = strArray.length;
+//		        	  
+//		        	  //adding items to the list
+//		        	  for(int i=0; i<strArray.length;i++) {
+//		        		  DataColumn dc = new DataColumn();
+//		        		  dc.setTitle("param"+i);
+//		        		  listOfCols.add(dc);
+//		        	  }
+//		          }
 		          else {
 		        	  String[] strArray = data.split(" |\\\t|\\;");
 		        	  strArray = removeCharsFromNumericString(strArray);
@@ -116,6 +135,7 @@ public class FXMLLoadDataController  implements Initializable{
 		          }
     			
     		}
+    		linesRead++;
     	
     	}
     	myReader.close();

@@ -120,6 +120,26 @@ public class FXMLDocumentController implements Initializable, DataSender{
     
     @FXML
     private MenuItem KNNButton;
+    
+    @FXML
+    private MenuItem CutsButton;
+
+    @FXML
+    void CutsButtonClick(ActionEvent event) throws IOException {
+    	
+    	System.out.println("click");
+    	//zmien
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLCuts.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLCutsController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("Cuts");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+
+    }
 
     @FXML
     void KNNButtonClick(ActionEvent event) throws IOException {

@@ -8,6 +8,7 @@ public class Cut {
 	int dimension;
 	double position;
 	List<Point> cutPoints;
+	boolean direction;
 	
 	
 	public Cut() {
@@ -20,6 +21,17 @@ public class Cut {
 		this.dimension = dimension;
 		this.position = position;
 		this.cutPoints = cutPoints;
+	}
+
+	
+
+	public boolean isDirection() {
+		return direction;
+	}
+
+
+	public void setDirection(boolean direction) {
+		this.direction = direction;
 	}
 
 

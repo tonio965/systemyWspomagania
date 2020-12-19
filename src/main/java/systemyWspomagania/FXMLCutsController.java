@@ -165,9 +165,10 @@ public class FXMLCutsController implements Initializable{
 		if(whichCut!=0) {
 			
 			if(whichCut==1) {
+				performedCuts.add(dimensionCuts.get(index).getBigCut());
 				for(int i = 0 ; i< dimensionCuts.get(index).getBigCut().getCutPoints().size() ; i++) {
 					
-					performedCuts.add(dimensionCuts.get(index).getBigCut());
+					
 					int id =dimensionCuts.get(index).getBigCut().getCutPoints().get(i).getId();
 					for(Point p : points) {
 						if(p.getId()==id) {
@@ -183,8 +184,8 @@ public class FXMLCutsController implements Initializable{
 			
 			
 			if(whichCut==-1) {
+				performedCuts.add(dimensionCuts.get(index).getSmallCut());
 				for(int i = 0 ; i< dimensionCuts.get(index).getSmallCut().getCutPoints().size() ; i++) {
-					performedCuts.add(dimensionCuts.get(index).getSmallCut());
 					int id =dimensionCuts.get(index).getSmallCut().getCutPoints().get(i).getId();
 					for(Point p : points) {
 						if(p.getId()==id) {
@@ -250,10 +251,13 @@ public class FXMLCutsController implements Initializable{
 		
 		//from smallest looking for the points to cut
 		Cut smallCut = new Cut();
+		//ide od najmniejszej - odcinam wszystkie < X
 		smallCut.setDirection(true);
 		smallCut.setDimension(dimension);
 		
 		Cut bigCut = new Cut();
+		
+		//ide od najwiekszej - odcinam wszystkie > X
 		bigCut.setDirection(false);
 		bigCut.setDimension(dimension);
 		
@@ -382,6 +386,34 @@ public class FXMLCutsController implements Initializable{
 
 	private void summaryFunction() {
 		System.out.println("twoj stary");
+		//create cuts array 
+		
+		/**
+		 * 
+		 * 		|cutID | cutDimen | <=2 or sth
+		 * 		
+		 * 		w sumie moja lista juz jest taka lista wiec wyprintowac ladnie oponenta
+		 * 
+		 * 
+		 */
+		
+		System.out.println("==============cuts==============");
+		for(int i=0; i<performedCuts.size(); i++) {
+			StringBuilder sb = new StringBuilder();
+			
+			String direction = new String("");
+			if(performedCuts.get(i).isDirection())
+				direction="<";
+			if(!performedCuts.get(i).isDirection()) {
+				direction=">";
+			}
+			
+			sb.append("= id:").append(i).append(" axis: ").append(performedCuts.get(i).getDimension()).append(" condition:")
+				.append(direction).append(performedCuts.get(i).getPosition());
+			System.out.println(sb.toString());
+			System.out.println("----------------------------");
+		}
+		System.out.println("================================");
 		
 	}
 

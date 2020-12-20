@@ -157,7 +157,7 @@ public class FXMLLoadDataController  implements Initializable{
 	private String[] removeCharsFromNumericString(String[] strArray) {
 		for(int i=0; i<strArray.length; i++) {
 			if(strArray[i].matches(".*\\d"))
-				strArray[i]=strArray[i].replaceAll("[^0-9,-]", ""); //replace all except numbers with a comma
+				strArray[i]=strArray[i].replaceAll("[^0-9,.-]", ""); //replace all except numbers with a comma
 			strArray[i]=strArray[i].replaceAll(",", "."); //relpace comma with dot - stupid java decimal conversion
 		}
 		return strArray;

@@ -2,9 +2,11 @@ package systemyWspomagania;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import HelperClasses.PointComparator;
 import interfaces.DataSender;
@@ -15,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import models.Cut;
+import models.CutPoint;
 import models.DataColumn;
 import models.DimensionCut;
 import models.Point;
@@ -32,8 +35,10 @@ public class FXMLCutsController implements Initializable{
 	ObservableList<String> options;
 	List<Point> points;
 	List<Cut> cuts;
-	
+	List<CutPoint> cutPoints;
 	List<Cut> performedCuts;
+	
+	List<Point> pointToCompareList;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		listOfCols = new ArrayList<>();
@@ -41,6 +46,8 @@ public class FXMLCutsController implements Initializable{
 		points = new ArrayList<>();
 		cuts = new ArrayList<>();
 		performedCuts = new ArrayList<>();
+		cutPoints = new ArrayList<>();
+		pointToCompareList=new ArrayList<>();
 		
 	}
 	
@@ -82,6 +89,7 @@ public class FXMLCutsController implements Initializable{
 			while(column<listOfCols.size()-1);
 			int decision = Integer.valueOf(listOfCols.get(listOfCols.size()-1).getContents().get(i));
 			points.add(new Point(coords, i,decision));
+			pointToCompareList.add(new Point(coords, i,decision));
 		}
 		
 		//sort points using X axis
@@ -403,9 +411,9 @@ public class FXMLCutsController implements Initializable{
 			
 			String direction = new String("");
 			if(performedCuts.get(i).isDirection())
-				direction="<";
+				direction="<=";
 			if(!performedCuts.get(i).isDirection()) {
-				direction=">";
+				direction=">=";
 			}
 			
 			sb.append("= id:").append(i).append(" axis: ").append(performedCuts.get(i).getDimension()).append(" condition:")
@@ -413,7 +421,117 @@ public class FXMLCutsController implements Initializable{
 			System.out.println(sb.toString());
 			System.out.println("----------------------------");
 		}
-		System.out.println("================================");
+		System.out.println("================================ \n \n");
+		
+		
+		System.out.println("===========cuts vector==========");
+		
+		
+		//create cut vector for every point
+		
+		for(int i=0; i<pointToCompareList.size(); i++) {
+			
+			Point p = pointToCompareList.get(i);
+			CutPoint cp = new CutPoint(p);
+			
+			for(int j=0; j<performedCuts.size(); j++) {
+				
+				//get this cut's cutting dimension
+				
+				int decision = checkIfThisPointMeetsCuttingCondition(cp, performedCuts.get(j));
+				cp.addConditon(decision);
+
+				
+				//check if in that dimension current cut meets the requirement if so 1 otherwise 0
+				
+			}
+			cutPoints.add(cp);
+			
+		}
+		
+		
+		for(int x=0; x<cutPoints.size();x++) {
+			System.out.println(cutPoints.get(x).toString());
+		}
+		
+		System.out.println("==============================/n");
+		
+		checkNewPoint();
+		
+		
+		
+		
+	}
+
+	private void checkNewPoint() {
+		System.out.println("=========checkNewPoint=========");
+		Scanner sc = new Scanner(System.in);
+		String userIn = new String();
+		System.out.println("provide data separated by semicolon eg. -1;5 \n");
+		userIn=sc.nextLine();
+		String[] input = userIn.split(";");
+		double [] valuesArr = new double [input.length];
+		List<Double> coords = new ArrayList<>();
+		for(int i =0; i<input.length; i++) {
+			coords.add(Double.valueOf(input[i]));
+		}
+		
+		Point p = new Point(coords,1000000,1000);
+		
+		CutPoint cp = new CutPoint(p);
+		
+		for(int j=0; j<performedCuts.size(); j++) {
+			
+			//get this cut's cutting dimension
+			
+			int decision = checkIfThisPointMeetsCuttingCondition(cp, performedCuts.get(j));
+			cp.addConditon(decision);
+
+			
+			//check if in that dimension current cut meets the requirement if so 1 otherwise 0
+			
+		}
+		
+		System.out.println("result" + cp.toString()+"\n");
+		System.out.println("===============================");
+		
+		checkNewPoint();
+		
+		
+		
+		
+	}
+
+	private int checkIfThisPointMeetsCuttingCondition(CutPoint cp, Cut cut) {
+		int returnValue=-1;
+		int currentDimension=cut.getDimension();
+		double currentPosition = cut.getPosition();
+		boolean direction = cut.isDirection();
+		
+		//for example im looking for x value
+		double pointValue = cp.getPoint().getCoordinates().get(currentDimension);
+		
+		//now i need to check if this point meets condition
+		
+		if(cut.isDirection()) {
+			
+			if(pointValue<=currentPosition)
+				returnValue=1;
+			else {
+				returnValue=0;
+			}
+			
+		}
+		if(!cut.isDirection()) {
+			
+			if(pointValue>currentPosition)
+				returnValue=1;
+			else {
+				returnValue=0;
+			}
+		}
+		
+		return returnValue;
 		
 	}
 

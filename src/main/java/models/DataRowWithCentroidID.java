@@ -40,6 +40,17 @@ public class DataRowWithCentroidID {
 		this.distanceFromCentroid=-1;
 	}
 	
+	public DataRowWithCentroidID() {
+		
+		this.data = new ArrayList<>();
+		this.centroidId=-1;
+		this.distanceFromCentroid=-1;
+	}
+	
+	public void addData(double d) {
+		data.add(d);
+	}
+	
 	
 	
 	

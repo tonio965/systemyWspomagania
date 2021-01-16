@@ -58,6 +58,7 @@ public class FXMLCutsController implements Initializable{
     @FXML
     void cutButtonClick(ActionEvent event) {
     	
+    	
     	performCut();
 
     }
@@ -218,32 +219,35 @@ public class FXMLCutsController implements Initializable{
 	}
 
 	private void drawSomething() {
-    	String columnTitle = "tit1";
-    	String column2Title = "tit2";
-    	
-    	Double [] first = new Double [points.size()];
-    	Double [] second = new Double [points.size()];
-    	Integer [] classCol = new Integer [points.size()];
-    	
-    	
-    	for(int i=0; i<points.size();i++) {
-    		
-    		first[i]=points.get(i).getCoordinates().get(0); 
-    		second[i]=points.get(i).getCoordinates().get(1); 
-    		classCol[i]=points.get(i).getDecision();
-    	}
-    	
-    	
-    	Table myData =
-    		    Table.create("Cute data")
-    		        .addColumns(
-    		            DoubleColumn.create(columnTitle, first),
-    		            DoubleColumn.create(column2Title, second),
-    					IntColumn.create("class", classCol));
+		if(listOfCols.size()<4) {
+	    	String columnTitle = "tit1";
+	    	String column2Title = "tit2";
+	    	
+	    	Double [] first = new Double [points.size()];
+	    	Double [] second = new Double [points.size()];
+	    	Integer [] classCol = new Integer [points.size()];
+	    	
+	    	
+	    	for(int i=0; i<points.size();i++) {
+	    		
+	    		first[i]=points.get(i).getCoordinates().get(0); 
+	    		second[i]=points.get(i).getCoordinates().get(1); 
+	    		classCol[i]=points.get(i).getDecision();
+	    	}
+	    	
+	    	
+	    	Table myData =
+	    		    Table.create("Cute data")
+	    		        .addColumns(
+	    		            DoubleColumn.create(columnTitle, first),
+	    		            DoubleColumn.create(column2Title, second),
+	    					IntColumn.create("class", classCol));
 
-    	Plot.show(
-    			ScatterPlot.create("2D Plot", 
-    		                       myData, columnTitle, column2Title, "class")); //2dplot
+	    	Plot.show(
+	    			ScatterPlot.create("2D Plot", 
+	    		                       myData, columnTitle, column2Title, "class")); //2dplot
+		}
+
 		
 	}
 
@@ -393,7 +397,6 @@ public class FXMLCutsController implements Initializable{
 	}
 
 	private void summaryFunction() {
-		System.out.println("twoj stary");
 		//create cuts array 
 		
 		/**
@@ -405,23 +408,7 @@ public class FXMLCutsController implements Initializable{
 		 * 
 		 */
 		
-		System.out.println("==============cuts==============");
-		for(int i=0; i<performedCuts.size(); i++) {
-			StringBuilder sb = new StringBuilder();
-			
-			String direction = new String("");
-			if(performedCuts.get(i).isDirection())
-				direction="<=";
-			if(!performedCuts.get(i).isDirection()) {
-				direction=">=";
-			}
-			
-			sb.append("= id:").append(i).append(" axis: ").append(performedCuts.get(i).getDimension()).append(" condition:")
-				.append(direction).append(performedCuts.get(i).getPosition());
-			System.out.println(sb.toString());
-			System.out.println("----------------------------");
-		}
-		System.out.println("================================ \n \n");
+
 		
 		
 		System.out.println("===========cuts vector==========");
@@ -455,6 +442,24 @@ public class FXMLCutsController implements Initializable{
 		}
 		
 		System.out.println("==============================/n");
+		
+		System.out.println("==============cuts==============");
+		for(int i=0; i<performedCuts.size(); i++) {
+			StringBuilder sb = new StringBuilder();
+			
+			String direction = new String("");
+			if(performedCuts.get(i).isDirection())
+				direction="<=";
+			if(!performedCuts.get(i).isDirection()) {
+				direction=">=";
+			}
+			
+			sb.append("= id:").append(i).append(" axis: ").append(performedCuts.get(i).getDimension()).append(" condition:")
+				.append(direction).append(performedCuts.get(i).getPosition());
+			System.out.println(sb.toString());
+			System.out.println("----------------------------");
+		}
+		System.out.println("================================ \n \n");
 		
 		checkNewPoint();
 		

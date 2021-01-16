@@ -59,6 +59,7 @@ public class FXMLDigitizeDataController implements Initializable {
     			indexInSet++;
     		}
     	}
+    	listOfCols.remove(columnId);
     	listOfCols.add(numerizedColumn);
     	dataSender.send(listOfCols);
         Stage stage = (Stage) comboBox.getScene().getWindow();

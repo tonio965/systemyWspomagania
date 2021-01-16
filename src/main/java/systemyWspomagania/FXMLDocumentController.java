@@ -86,6 +86,9 @@ public class FXMLDocumentController implements Initializable, DataSender{
     private MenuItem digitizeStringColumnBtn;
 	
     @FXML
+    private MenuItem KmeansButton;
+    
+    @FXML
     private MenuItem minMaxMenuButton;
 	
     @FXML
@@ -123,6 +126,20 @@ public class FXMLDocumentController implements Initializable, DataSender{
     
     @FXML
     private MenuItem CutsButton;
+    
+    @FXML
+    void KmeansButtonClick(ActionEvent event) throws IOException {
+    	System.out.println("kmeans click");
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLkmeans.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLKmeansController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("kmeans");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
 
     @FXML
     void CutsButtonClick(ActionEvent event) throws IOException {

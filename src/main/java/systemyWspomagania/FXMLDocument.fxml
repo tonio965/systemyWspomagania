@@ -41,6 +41,11 @@
                 <MenuItem fx:id="CutsButton" mnemonicParsing="false" onAction="#CutsButtonClick" text="Cuts" />
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="K-means">
+              <items>
+                  <MenuItem fx:id="KmeansButton" mnemonicParsing="false" onAction="#KmeansButtonClick" text="K-means" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
    </children>

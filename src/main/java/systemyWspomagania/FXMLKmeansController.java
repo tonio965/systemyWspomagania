@@ -2,10 +2,15 @@ package systemyWspomagania;
 
 import java.util.*;
 
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.Covariance;
+
 import interfaces.DataSender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 import models.DataColumn;
 import models.DataColumnRow;
@@ -26,11 +31,28 @@ public class FXMLKmeansController {
 
     @FXML
     void performKmeansButtonClick(ActionEvent event) {
+    	int decission=-1;
+    	if(manhattanButton.isSelected())
+    		decission=1;
+    	if(MahalanobisButton.isSelected())
+    		decission=2;
+    	if(EuklideanButton.isSelected())
+    		decission=3;
     	System.out.println("button click ");
-    	performCounting();
+    	performCounting(decission);
     }
     
-	private void performCounting() {
+
+    @FXML
+    private RadioButton manhattanButton;
+
+    @FXML
+    private RadioButton MahalanobisButton;
+
+    @FXML
+    private RadioButton EuklideanButton;
+    
+	private void performCounting(int decission) {
 		
 		amountOfDecisionClasses = findAmountOfClasses();
 		createCentroids();
@@ -41,7 +63,7 @@ public class FXMLKmeansController {
 		
 		while(isChanging) {
 			System.out.println("relocate "+counter);
-			assignDistanceFromCentroids();
+			assignDistanceFromCentroids(decission);
 			isChanging =relocateCentroid();
 			counter++;
 			
@@ -230,7 +252,7 @@ public class FXMLKmeansController {
 		
 	}
 
-	private void assignDistanceFromCentroids() {
+	private void assignDistanceFromCentroids(int decission) {
 		int changes=0;
 		for(int i=0; i<rows.size(); i++) {
 			
@@ -238,9 +260,22 @@ public class FXMLKmeansController {
 				int minDistance = -1;
 				DataRowWithCentroidID currentRow = rows.get(i);
 				double [] distances = new double[amountOfDecisionClasses+1];
+				//tyle ile jest centroidow
+				//obliczam dystans od kazdej z centroidy
+				//mahalanobis zwraca dystans od sredniej danego punktu
+				//wiec musze go odpalic 2 razy - 1 raz dla centroidy 2 raz dla punktu i wartosci odjac z ABS
 				for(int j=0; j<=amountOfDecisionClasses; j++) {
 					DataRowWithCentroidID currentCentroid = centroids.get(j);
-					distances[j] = euklideanDistance(currentRow, currentCentroid);
+					
+					if(decission==1)
+						distances[j] = manhattanDistance(currentRow, currentCentroid);
+					if(decission==3)
+						distances[j] = euklideanDistance(currentRow, currentCentroid);
+					if(decission==2) {
+						double centroidFromMean = mahalanobisDistance(currentCentroid);
+						double rowFromMean = mahalanobisDistance(currentRow);
+						distances[j] = Math.abs(centroidFromMean-rowFromMean);
+					}
 				}
 				int minimalIndex = findMinimalDistanceIndex(distances);
 				rows.get(i).setDistanceFromCentroid(distances[minimalIndex]);
@@ -253,6 +288,82 @@ public class FXMLKmeansController {
 		System.out.println("amountOfChanges: "+changes);
 		
 	}
+	
+	private double mahalanobisDistance(DataRowWithCentroidID givenValues) {
+		
+		List<Double> meanColumnValues = new ArrayList<>();
+		List<Double> providedValues = givenValues.getData();
+		List<Double> givenMinusMeanValues = new ArrayList<>();
+		
+		double[][] valuesMatrix = new double[rows.size()][rows.get(0).getData().size()];
+		
+		
+		//calculate mean for each column
+		for(int i=0; i< rows.get(0).getData().size(); i++) {
+			double sumInColumn =0;
+			for(int j=0; j<rows.size(); j++) {
+				sumInColumn+=Double.valueOf(rows.get(j).getData().get(i));
+				valuesMatrix[j][i]=Double.valueOf(rows.get(j).getData().get(i));
+			}
+			meanColumnValues.add(sumInColumn/rows.size());
+		}
+		
+		// calculate (x-m) given array minus mean array
+		for(int x = 0 ; x< meanColumnValues.size() ; x++) {
+			givenMinusMeanValues.add(providedValues.get(x) - meanColumnValues.get(x));
+		}
+		
+		//pionowa macierz 
+		double[][] verticalMatrixGiven = new double [1][givenMinusMeanValues.size()];
+		for(int i=0;i<givenMinusMeanValues.size(); i++) {
+			verticalMatrixGiven[0][i] = givenMinusMeanValues.get(i);
+		}
+		
+		RealMatrix verticalMatrix = MatrixUtils.createRealMatrix(verticalMatrixGiven);
+		
+		//pozioma macierz
+		double[][] horizontalMatrixGiven = new double [givenMinusMeanValues.size()][1];
+		for(int i=0;i<givenMinusMeanValues.size(); i++) {
+			horizontalMatrixGiven[i][0] = givenMinusMeanValues.get(i);
+		}
+		
+		RealMatrix horizontalMatrix = MatrixUtils.createRealMatrix(horizontalMatrixGiven);
+		
+		//obliczam maciez kowariancji
+		RealMatrix mx = MatrixUtils.createRealMatrix(valuesMatrix);
+		RealMatrix cov = new Covariance(mx).getCovarianceMatrix();
+		double [][] covarianceMatrix = cov.getData();
+		RealMatrix inversed = MatrixUtils.inverse(cov);
+		double [][] inversedCovarianceMatrix = inversed.getData();
+		
+		RealMatrix p1 = verticalMatrix.multiply(inversed);
+		RealMatrix p2 = p1.multiply(horizontalMatrix);
+		
+		double [][] distance = p2.getData();
+		double dist=0;
+		for(int i=0;i<distance.length; i++) {
+			for(int j=0; j<distance[i].length; j++) {
+				dist+=distance[i][j];
+			}
+		}
+
+		return dist;
+	}
+	
+
+	
+	private double manhattanDistance(DataRowWithCentroidID centroid, DataRowWithCentroidID point) {
+		List<Double> rowValues = new ArrayList<>();
+		List<Double> providedValues = new ArrayList<>();
+		double distance =0;
+		
+		for(int x=0; x<point.getData().size(); x++) {
+			distance+= Math.abs(centroid.getData().get(x)-centroid.getData().get(x));
+		}
+		return distance;
+		
+	}
+
 
 	private int findMinimalDistanceIndex(double[] distances) {
 		double minimum = Double.MAX_VALUE;

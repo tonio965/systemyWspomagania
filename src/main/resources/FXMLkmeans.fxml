@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="239.0" prefWidth="392.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="systemyWspomagania.FXMLKmeansController">
    <children>
       <Button fx:id="performKmeansButton" layoutX="169.0" layoutY="106.0" mnemonicParsing="false" onAction="#performKmeansButtonClick" text="Button" />
+      <RadioButton fx:id="manhattanButton" layoutX="41.0" layoutY="50.0" mnemonicParsing="false" text="Manhattan" />
+      <RadioButton fx:id="MahalanobisButton" layoutX="132.0" layoutY="50.0" mnemonicParsing="false" text="Mahalanobis" />
+      <RadioButton fx:id="EuklideanButton" layoutX="235.0" layoutY="50.0" mnemonicParsing="false" text="Euklidean" />
+      <RadioButton layoutX="41.0" layoutY="75.0" mnemonicParsing="false" text="Lp" />
    </children>
 </AnchorPane>

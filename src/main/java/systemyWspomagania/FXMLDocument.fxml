@@ -46,6 +46,11 @@
                   <MenuItem fx:id="KmeansButton" mnemonicParsing="false" onAction="#KmeansButtonClick" text="K-means" />
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Trees">
+              <items>
+                <MenuItem fx:id="decissionTreeButton" mnemonicParsing="false" onAction="#decissionTreeButtonClick" text="Decission Tree" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
    </children>

@@ -83,6 +83,9 @@ public class FXMLDocumentController implements Initializable, DataSender{
 	//annotated fields generated automatically
 	
     @FXML
+    private MenuItem decissionTreeButton;
+	
+    @FXML
     private MenuItem digitizeStringColumnBtn;
 	
     @FXML
@@ -126,6 +129,20 @@ public class FXMLDocumentController implements Initializable, DataSender{
     
     @FXML
     private MenuItem CutsButton;
+    
+    @FXML
+    void decissionTreeButtonClick(ActionEvent event) throws IOException {
+    	System.out.println("decission tree click");
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLTrees.fxml"));
+    	Parent pane = (Parent) loader.load();
+    	FXMLTreesController secondController = loader.getController();
+    	secondController.setSendDataSender(this);
+    	secondController.sendCurrentList(dataInSeparateColumns);
+    	Stage stage = new Stage();
+    	stage.setTitle("kmeans");
+    	stage.setScene(new Scene(pane));
+    	stage.show();
+    }
     
     @FXML
     void KmeansButtonClick(ActionEvent event) throws IOException {

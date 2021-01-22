@@ -83,7 +83,8 @@ public class FXMLDiscretizeController implements Initializable {
 			dc.addContent(sectorsColumn[k]);
 		}
 		
-		listOfCols.add(dc);
+//		listOfCols.add(dc);
+		listOfCols.set(columnIndex, dc);
 		dataSender.send(listOfCols);
 	    Stage stage = (Stage) comboBox.getScene().getWindow();
 	    stage.close();
